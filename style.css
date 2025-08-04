@@ -41,7 +41,7 @@ nav a:hover {
 
 .slider {
   width: 100%;
-  height: 500px;
+  height: 615px;
   overflow: hidden;
   position: relative;
 }
@@ -54,7 +54,7 @@ nav a:hover {
 
 .slides img {
   width: 100%;
-  height: 500px;
+  height: 615px;
   object-fit: cover;
 }
 
