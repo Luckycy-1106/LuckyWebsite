@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LUCKY Product</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+  <style>
+    .product-page {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .product-page img {
+      max-width: 400px;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .cart-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00cc66;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .cart-link:hover {
+      background-color: #00994d;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="brand-name"><span class="notranslate" translate="no">LU<span class="green">C</span>KY</span></h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="tshirt.html">T-Shirts</a>
+      <a href="About.html">About</a>
+      <a href="Contact.html">Contact</a>
+      <a href="Chart.html">Chart</a>
+    </nav>
+  </header>
+
+  <main id="main" class="product-page">
+    <img id="product-img" src="" alt="Product Image" />
+    <h2 id="product-name">Loading...</h2>
+    <p id="product-desc"></p>
+    <p id="product-price" style="font-size: 20px; color: #00cc66;"><strong></strong></p>
+    <a href="Contact.html" class="cart-link">Order Now</a>
+  </main>
+
+  <footer>
+    <p>© 2025 LuCky - All Rights Reserved</p>
+  </footer>
+
+  <script>
+    const products = {
+      "1": {
+        name: "LUCKY Signature - Black",
+        img: "shirt1.jpeg",
+        desc: "Signature logo edition. Stylish and bold.",
+        price: "RM69.00"
+      },
+      "2": {
+        name: "LUCKY Signature - White",
+        img: "shirt2.jpg",
+        desc: "Classic white tee with signature logo.",
+        price: "RM69.00"
+      },
+      "3": {
+        name: "White Basic Tee",
+        img: "shirt3.jpg",
+        desc: "Soft cotton. Unisex design. Clean style.",
+        price: "RM69.00"
+      },
+      "4": {
+        name: "Black Basic Tee",
+        img: "shirt4.jpg",
+        desc: "Everyday black comfort tee. Unisex.",
+        price: "RM69.00"
+      },
+      "5": {
+        name: "Green Basic Tee",
+        img: "shirt5.jpg",
+        desc: "Fresh color for standout days.",
+        price: "RM69.00"
+      },
+      "6": {
+        name: "Dark Edition",
+        img: "shirt6.jpg",
+        desc: "Black on black. Minimal and powerful.",
+        price: "RM69.00"
+      },
+      "7": {
+        name: "Smile Tee",
+        img: "shirt7.jpg",
+        desc: "Positive vibes with a smile. Feel good wear.",
+        price: "RM69.00"
+      },
+      "8": {
+        name: "Ocean Blue",
+        img: "shirt8.jpg",
+        desc: "Calming blue tones. Inspired by waves.",
+        price: "RM69.00"
+      }
+    };
+
+    function loadProduct() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("item");
+      const product = products[id];
+
+      if (product) {
+        document.getElementById("product-name").innerText = product.name;
+        document.getElementById("product-img").src = product.img;
+        document.getElementById("product-desc").innerText = product.desc;
+        document.getElementById("product-price").innerText = product.price;
+      } else {
+        document.getElementById("main").innerHTML = "<h2>Product not found.</h2>";
+      }
+    }
+
+    window.onload = loadProduct;
+  </script>
+</body>
+</html>
