@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LUCKY | Chart</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <h1 class="brand-name">
+      <span class="notranslate" translate="no">LU<span class="green">C</span>KY</span>
+    </h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="tshirt.html">T-Shirts</a>
+      <a href="About.html">About</a>
+      <a href="Contact.html">Contact</a>
+      <a href="Cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main class="cart-container">
+    <h2>Your Chart</h2>
+    <div id="cart-items"></div>
+    <div class="cart-summary">
+      <p><strong>Total:</strong> RM<span id="total-price">0.00</span></p>
+      <a href="Checkout.html"><button class="btn-checkout" onclick="goToCheckout()">Checkout</button></a>
+    </div>
+  </main>
+
+  <script>
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartContainer = document.getElementById('cart-items');
+    const totalPriceElem = document.getElementById('total-price');
+  
+    function renderCart() {
+      cartContainer.innerHTML = '';
+      let total = 0;
+  
+      cartItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+  
+        const priceNum = parseFloat(item.price.replace('RM', '')) * item.quantity;
+        total += priceNum;
+  
+        div.innerHTML = `
+          <div>
+            <h3>${item.name}</h3>
+            <p>Size: ${item.size} | Quantity: ${item.quantity}</p>
+            <p>Price: ${item.price}</p>
+          </div>
+          <button onclick="removeItem(${index})">Remove</button>
+        `;
+        cartContainer.appendChild(div);
+      });
+  
+      totalPriceElem.innerText = total.toFixed(2);
+    }
+  
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      renderCart();
+    }
+  
+    renderCart();
+  
+    function goToCheckout() {
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      const total = parseFloat(document.getElementById("total-price").innerText);
+      localStorage.setItem("cartTotal", total.toFixed(2)); // 保存总价
+      window.location.href = "Checkout.html";
+    }
+  </script>
+  
+</body>
+</html>
