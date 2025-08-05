@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LUCKY Product</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <h1 class="brand-name"><span class="notranslate" translate="no">LU<span class="green">C</span>KY</span></h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="tshirt.html">T-Shirts</a>
+      <a href="About.html">About</a>
+      <a href="Contact.html">Contact</a>
+      <a href="Cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main class="product-container">
+    <div class="product-images">
+      <img id="main-img" src="" alt="Product Image">
+      <div class="image-buttons">
+        <button onclick="swapImage(1)">Front</button>
+        <button onclick="swapImage(2)">Back</button>
+      </div>
+    </div>
+
+    <div class="product-details">
+      <h2 id="product-name">Loading...</h2>
+      <p id="product-desc"></p>
+      <p id="product-price" class="price"></p>
+
+      <label>Size:</label>
+      <div class="size-options">
+        <button class="size-button" onclick="selectSize(this)">S</button>
+        <button class="size-button" onclick="selectSize(this)">M</button>
+        <button class="size-button" onclick="selectSize(this)">L</button>
+        <button class="size-button" onclick="selectSize(this)">XL</button>
+      </div>
+
+      <label>Quantity:</label>
+      <div class="quantity-wrapper">
+        <button class="quantity-button" onclick="adjustQuantity(-1)">-</button>
+        <input type="number" id="quantity" value="1" min="1">
+        <button class="quantity-button" onclick="adjustQuantity(1)">+</button>
+      </div>
+
+      <div class="button-group">
+        <button class="btn" onclick="addToCart()">Add to Cart</button>
+        <button class="btn" onclick="goToCheckout()">Buy It Now</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 LuCky - All Rights Reserved</p>
+  </footer>
+
+  <script>
+    const products = {
+      "1": {
+        name: "LUCKY Signature - Black",
+        img1: "shirt1.jpeg",
+        img2: "shirt1-back.jpeg",
+        desc: "Signature logo edition. Stylish and bold.",
+        price: "RM69.00"
+      },
+      "2": {
+        name: "LUCKY Signature - White",
+        img1: "shirt2.jpg",
+        img2: "shirt2-back.jpg",
+        desc: "Classic white tee with signature logo.",
+        price: "RM69.00"
+      }
+    };
+
+    let currentProduct;
+
+    function loadProduct() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("item");
+      const product = products[id];
+      if (product) {
+        currentProduct = product;
+        document.getElementById("product-name").innerText = product.name;
+        document.getElementById("main-img").src = product.img1;
+        document.getElementById("product-desc").innerText = product.desc;
+        document.getElementById("product-price").innerText = product.price;
+      } else {
+        document.querySelector(".product-container").innerHTML = "<h2>Product not found.</h2>";
+      }
+    }
+
+    function swapImage(index) {
+      if (currentProduct) {
+        document.getElementById("main-img").src = index === 1 ? currentProduct.img1 : currentProduct.img2;
+      }
+    }
+
+    function selectSize(button) {
+      document.querySelectorAll('.size-button').forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+    }
+
+    function adjustQuantity(change) {
+      const qtyInput = document.getElementById("quantity");
+      let value = parseInt(qtyInput.value);
+      value += change;
+      if (value < 1) value = 1;
+      qtyInput.value = value;
+    }
+
+    window.onload = loadProduct;
+  </script>
+
+<script>
+  // ...已有的代码...
+
+  function addToCart() {
+    if (!currentProduct) return;
+
+    const selectedSize = document.querySelector(".size-button.selected");
+    const quantity = parseInt(document.getElementById("quantity").value);
+
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({
+      name: currentProduct.name,
+      price: currentProduct.price,
+      size: selectedSize.innerText,
+      quantity: quantity,
+      img: currentProduct.img1
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Item added to cart!");
+  }
+</script>
+
+<script>
+  function goToCheckout() {
+    if (!currentProduct) return;
+
+    const selectedSize = document.querySelector(".size-button.selected");
+    const quantity = parseInt(document.getElementById("quantity").value);
+
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+
+    const checkoutItem = {
+      name: currentProduct.name,
+      price: currentProduct.price,
+      size: selectedSize.innerText,
+      quantity: quantity,
+      img: currentProduct.img1
+    };
+
+    localStorage.setItem("checkoutItem", JSON.stringify(checkoutItem));
+    window.location.href = "checkout.html";
+  }
+</script>
+
+</body>
+</html>
