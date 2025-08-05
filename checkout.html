@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LUCKY | Checkout</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+  <header>
+    <h1 class="brand-name">
+      <span class="notranslate">LU<span class="green">C</span>KY</span>
+    </h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="tshirt.html">T-Shirts</a>
+      <a href="Cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main class="checkout-container">
+    <!-- Left: Summary -->
+    <div class="summary" id="product-summary">
+      <!-- JS will inject content here -->
+    </div>
+
+    <!-- Right: Form -->
+    <form class="form-section" action="https://formspree.io/f/xwpqrlng" method="POST">
+      <!-- Hidden fields -->
+      <input type="hidden" name="product" id="form-product" />
+      <input type="hidden" name="size" id="form-size" />
+      <input type="hidden" name="quantity" id="form-quantity" />
+    
+      <label>Full Name</label>
+      <input type="text" name="name" required />
+    
+      <label>Email</label>
+      <input type="email" name="email" required />
+    
+      <label>Phone</label>
+      <input type="tel" name="phone" required />
+    
+      <label>House No. / Unit</label>
+      <input type="text" name="house_no" required />
+    
+      <label>Street</label>
+      <input type="text" name="street" required />
+    
+      <label>Postcode</label>
+      <input type="text" name="postcode" required />
+
+      <label>City</label>
+      <input type="text" name="city" required />
+    
+      <label>Country</label>
+      <input type="text" name="country" value="Malaysia" required />
+    
+      <button type="submit" class="btn">Place Order</button>
+
+    </form>
+    
+  </main>
+
+  <footer>
+    <p>© 2025 LuCky - All Rights Reserved</p>
+  </footer>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    const checkoutItem = JSON.parse(localStorage.getItem("checkoutItem"));
+  
+    // 如果从 Buy It Now 来（checkoutItem 不为空），就用它
+    if ((!cart || cart.length === 0) && checkoutItem) {
+      cart = [checkoutItem];
+    }
+  
+    if (cart && cart.length > 0) {
+      let summaryHTML = `<h2>Order Summary</h2>`;
+      let total = 0;
+  
+      cart.forEach((item) => {
+        const itemTotal = parseFloat(item.price.replace("RM", "")) * item.quantity;
+        total += itemTotal;
+  
+        summaryHTML += `
+          <div style="margin-bottom: 20px;">
+            <p><strong>Product:</strong> ${item.name}</p>
+            <p><strong>Size:</strong> ${item.size}</p>
+            <p><strong>Quantity:</strong> ${item.quantity}</p>
+            <p><strong>Price:</strong> ${item.price}</p>
+            <img src="${item.img}" style="width: 150px; border-radius: 8px;" />
+            <hr>
+          </div>
+        `;
+      });
+  
+      summaryHTML += `<p><strong>Total: RM${total.toFixed(2)}</strong></p>`;
+      document.getElementById("product-summary").innerHTML = summaryHTML;
+  
+      // 填充隐藏字段
+      document.getElementById("form-product").value = cart.map(item =>
+        `${item.name} (Size: ${item.size}, Qty: ${item.quantity})`
+      ).join(" | ");
+      document.getElementById("form-size").value = "";
+      document.getElementById("form-quantity").value = "";
+  
+      // 清除购物数据（只清除一次即可）
+      localStorage.removeItem("cart");
+      localStorage.removeItem("checkoutItem");
+  
+    } else {
+      document.querySelector("main").innerHTML = "<p style='text-align:center;'>No items in cart for checkout.</p>";
+    }
+  </script>
+  
+</body>
+</html>
